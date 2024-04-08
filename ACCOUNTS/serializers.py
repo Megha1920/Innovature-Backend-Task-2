@@ -41,7 +41,7 @@ class LoginSerialzer(serializers.Serializer):
     password = serializers.CharField()
     
     def validate(self, data):
-        # Your validation logic
+       
         return data
     
     def get_jwt_token(self, data):
@@ -52,8 +52,8 @@ class LoginSerialzer(serializers.Serializer):
         refresh = RefreshToken.for_user(user)
         access_token = str(refresh.access_token)
         
-        # Customize the token expiration time if needed
-        access_token_lifetime = timedelta(hours=24)  # Example: Set access token lifetime to 24 hours
+        
+        access_token_lifetime = timedelta(hours=24)  
         
         # Set token expiration
         refresh.set_exp(lifetime=access_token_lifetime)
