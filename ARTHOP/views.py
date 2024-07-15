@@ -4,7 +4,8 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .utils import perform_arithmetic_operation
-
+import logging
+logger = logging.getLogger(__name__)
 
 
 class AdditionView(APIView):
@@ -15,7 +16,7 @@ class AdditionView(APIView):
         try:
             if not request.user.is_authenticated:
                 return Response({'message': 'User not authenticated'}, status=status.HTTP_401_UNAUTHORIZED)
-            
+            logger.debug(f"User: {request.user}")
             data = request.data
             num1 = data.get('num1')
             num2 = data.get('num2')

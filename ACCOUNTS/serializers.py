@@ -39,23 +39,20 @@ class RegisterSerialzer(serializers.Serializer):
 class LoginSerialzer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
-    
+
     def validate(self, data):
-       
+        # Add custom validation logic if needed
         return data
-    
+
     def get_jwt_token(self, data):
         user = authenticate(username=data['username'], password=data['password'])
         if not user:
-            return {'message': "Invalid credentials", 'data': {}}
+            raise AuthenticationFailed("Invalid credentials")
         
         refresh = RefreshToken.for_user(user)
         access_token = str(refresh.access_token)
         
-        
         access_token_lifetime = timedelta(hours=24)  
-        
-        # Set token expiration
         refresh.set_exp(lifetime=access_token_lifetime)
         access_token_payload = {
             'token': {
@@ -64,5 +61,3 @@ class LoginSerialzer(serializers.Serializer):
             }
         }
         return {'message': "Login successful", 'data': access_token_payload}
-        
-        
